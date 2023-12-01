@@ -82,9 +82,9 @@ pub fn solve1() {
 
 pub fn solve2() {
     let mut sum = 0;
+    let mut digits = Vec::with_capacity(100);
 
     for line in INPUT.lines() {
-        let mut digits = Vec::with_capacity(100);
         let mut recognizer = Recognizer::new();
 
         for c in line.chars() {
@@ -98,6 +98,8 @@ pub fn solve2() {
 
             sum = sum + l
         }
+
+        digits.clear();
     }
 
     println!("AOC 1.2 - Solution is: {}", sum)
