@@ -1,4 +1,6 @@
-mod aoc1;
+extern crate aoc;
+
+use aoc::*;
 
 fn main() {
     let sol1 = aoc1::solve1();

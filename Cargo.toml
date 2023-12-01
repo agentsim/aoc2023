@@ -3,9 +3,15 @@ name = "aoc_2023"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+aoc = { path = "src/aoc" }
+
+[dev-dependencies]
+criterion = "*"
+
+[[bench]]
+name = "aoc2023"
+harness = false
 
 [profile.release]
 debug = true
