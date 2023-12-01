@@ -1,6 +1,9 @@
 mod aoc1;
 
 fn main() {
-    aoc1::solve1();
-    aoc1::solve2();
+    let sol1 = aoc1::solve1();
+    let sol2 = aoc1::solve2();
+
+    println!("AOC 1.1 - {}", sol1);
+    println!("AOC 1.2 - {}", sol2);
 }

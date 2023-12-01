@@ -22,6 +22,10 @@ impl Recognizer {
         }
     }
 
+    pub fn reset(&mut self) {
+        self.current_seqs.clear();
+    }
+
     pub fn read(&mut self, c: char) -> Option<usize> {
         if let Some(v) = c.to_digit(10) {
             self.current_seqs.clear();
@@ -54,7 +58,7 @@ impl Recognizer {
     }
 }
 
-pub fn solve1() {
+pub fn solve1() -> u32 {
     let mut sum = 0;
 
     for line in INPUT.lines() {
@@ -77,16 +81,15 @@ pub fn solve1() {
         sum = sum + line_val
     }
 
-    println!("AOC 1.1 - Solution is: {}", sum)
+    sum
 }
 
-pub fn solve2() {
+pub fn solve2() -> usize {
     let mut sum = 0;
     let mut digits = Vec::with_capacity(100);
+    let mut recognizer = Recognizer::new();
 
     for line in INPUT.lines() {
-        let mut recognizer = Recognizer::new();
-
         for c in line.chars() {
             if let Some(v) = recognizer.read(c) {
                 digits.push(v);
@@ -100,7 +103,8 @@ pub fn solve2() {
         }
 
         digits.clear();
+        recognizer.reset();
     }
 
-    println!("AOC 1.2 - Solution is: {}", sum)
+    sum
 }
