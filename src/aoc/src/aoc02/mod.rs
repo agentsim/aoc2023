@@ -1,6 +1,7 @@
 use anyhow::{bail, Result};
 use std::str::Chars;
 use std::iter::Peekable;
+use super::util::{read_number, skip_whitespace};
 
 static INPUT: &str = include_str!("input");
 
@@ -13,16 +14,6 @@ enum Colour {
 fn skip(chars: &mut Peekable<Chars>, mut n: usize) {
     while n > 0 && chars.next().is_some() {
         n = n - 1
-    }
-}
-
-fn skip_whitespace(chars: &mut Peekable<Chars>) {
-    while let Some(ch) = chars.peek() {
-        if ch.is_whitespace() {
-            chars.next();
-        } else {
-            break
-        }
     }
 }
 
@@ -43,24 +34,6 @@ fn read_colour(chars: &mut Peekable<Chars>) -> Result<Colour> {
     } else {
         bail!("Unexpected end of input while reading colour");
     }
-}
-
-fn read_number(chars: &mut Peekable<Chars>) -> u32 {
-    let mut num = 0;
-
-    loop {
-        if let Some(ch) = chars.next() {
-            if let Some(v) = ch.to_digit(10) {
-                num = num * 10 + v;
-            } else {
-                break
-            }
-        } else {
-            break
-        }
-    }
-
-    num
 }
 
 fn parse_result(chars: &mut Peekable<Chars>) -> Result<(u32, Colour)> {

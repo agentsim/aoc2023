@@ -16,11 +16,18 @@ fn main() -> Result<()> {
 
     println!("AOC 2.1 - {}", sol2_1);
     println!("AOC 2.2 - {}", sol2_2);
-    */
+
     let sol3_1 = aoc03::solve1();
     let sol3_2 = aoc03::solve2();
 
     println!("AOC 3.1 - {}", sol3_1);
     println!("AOC 2.2 - {}", sol3_2);
+    */
+    let sol4_1 = aoc04::solve1();
+    let sol4_2 = aoc04::solve2();
+
+    println!("AOC 4.1 - {}", sol4_1);
+    println!("AOC 4.2 - {}", sol4_2);
+
     Ok(())
 }
