@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use std::iter::Peekable;
 use std::str::Chars;
-use crate::util::{read_number, skip_until, skip_whitespace};
+use crate::util::{read_u32, skip_until, skip_whitespace};
 
 static INPUT: &str = include_str!("input");
 
@@ -15,7 +15,7 @@ fn read_numbers(chars: &mut Peekable<Chars>, numbers: &mut HashSet<u32>) {
         }
 
         skip_whitespace(chars);
-        numbers.insert(read_number(chars));
+        numbers.insert(read_u32(chars));
         skip_whitespace(chars);
     }
 }
@@ -26,7 +26,7 @@ fn count_winners(chars: &mut Peekable<Chars>, numbers: &HashSet<u32>) -> usize {
     while let Some(ch) = chars.peek() {
         skip_whitespace(chars);
 
-        if numbers.contains(&read_number(chars)) {
+        if numbers.contains(&read_u32(chars)) {
             rc += 1;
         }
 

@@ -1,7 +1,7 @@
 use anyhow::{bail, Result};
 use std::str::Chars;
 use std::iter::Peekable;
-use super::util::{read_number, skip_whitespace};
+use super::util::{read_u32, skip_whitespace};
 
 static INPUT: &str = include_str!("input");
 
@@ -37,7 +37,7 @@ fn read_colour(chars: &mut Peekable<Chars>) -> Result<Colour> {
 }
 
 fn parse_result(chars: &mut Peekable<Chars>) -> Result<(u32, Colour)> {
-    let number = read_number(chars);
+    let number = read_u32(chars);
 
     skip_whitespace(chars);
 
@@ -111,7 +111,7 @@ fn parse_game(input: &str) -> Result<(bool, u32)> {
     let mut chars = input.chars().peekable();
 
     skip(&mut chars, 5);
-    let game_id = read_number(&mut chars);
+    let game_id = read_u32(&mut chars);
 
     skip_whitespace(&mut chars);
 
@@ -132,7 +132,7 @@ fn parse_game_2(input: &str) -> Result<(u32)> {
     let mut chars = input.chars().peekable();
 
     skip(&mut chars, 5);
-    let game_id = read_number(&mut chars);
+    let game_id = read_u32(&mut chars);
     let mut max = (0, 0, 0);
 
     skip_whitespace(&mut chars);

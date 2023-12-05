@@ -23,13 +23,48 @@ pub fn skip_until<F>(chars: &mut Peekable<Chars>, f: F)
     }
 }
 
-pub fn read_number(chars: &mut Peekable<Chars>) -> u32 {
+pub fn read_until<F>(chars: &mut Peekable<Chars>, f: F) -> String
+    where
+        F: Fn(char) -> bool {
+    let mut s = String::new();
+
+    while let Some(ch) = chars.peek() {
+        if f(*ch) {
+            break
+        }
+
+        s.push(*ch);
+        chars.next();
+    }
+
+    s
+}
+
+pub fn read_u32(chars: &mut Peekable<Chars>) -> u32 {
     let mut num = 0;
 
     loop {
         if let Some(ch) = chars.next() {
             if let Some(v) = ch.to_digit(10) {
                 num = num * 10 + v;
+            } else {
+                break
+            }
+        } else {
+            break
+        }
+    }
+
+    num
+}
+
+pub fn read_u64(chars: &mut Peekable<Chars>) -> u64 {
+    let mut num = 0;
+
+    loop {
+        if let Some(ch) = chars.next() {
+            if let Some(v) = ch.to_digit(10) {
+                num = num * 10 + (v as u64);
             } else {
                 break
             }
