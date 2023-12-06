@@ -37,23 +37,13 @@ fn ways_to_win(time: f64, record: f64) -> u32 {
     // 0 = ax^2 + bx + c
     let a: f64 = - 1.0;
     let b: f64 = time;
-    let c: f64 = -record;
+    let c: f64 = -(record + 1.);
 
     // intercepts = (-b +/- sqrt(b^2 - 4ac)) / 2a
     let i1 = (-b - (b * b - 4.0 * a * c).sqrt()) / (2.0 * a);
     let i2 = (-b + (b * b - 4.0 * a * c).sqrt()) / (2.0 * a);
-    let mut low = i1.min(i2).ceil();
-    let low_win = (time - low) * low - record;
-    let mut high = i1.max(i2).floor();
-    let high_win = (time - high) * high - record;
-
-    if low_win == 0.0 {
-        low += 1.0
-    }
-
-    if high_win == 0.0 {
-        high -= 1.0
-    }
+    let low = i1.min(i2).ceil();
+    let high = i1.max(i2).floor();
 
     (high - low + 1.) as u32
 }
