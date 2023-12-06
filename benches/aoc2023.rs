@@ -26,8 +26,13 @@ pub fn day_05(c: &mut Criterion) {
     c.bench_function("aoc 5.2", |b| b.iter(|| aoc05::solve2()));
 }
 
+pub fn day_06(c: &mut Criterion) {
+    c.bench_function("aoc 6.1", |b| b.iter(|| aoc06::solve1()));
+    c.bench_function("aoc 6.2", |b| b.iter(|| aoc06::solve2()));
+}
+
 criterion_group!(
     name = aoc;
     config = Criterion::default();
-    targets = day_01, day_02, day_03, day_04, day_05);
+    targets = day_01, day_02, day_03, day_04, day_05, day_06);
 criterion_main!(aoc);
