@@ -19,11 +19,17 @@ struct Hand {
     cards: [char; 5],
     bid: u64,
     joker: bool,
-    combos: HashMap<char, u32>
+    hand_type: HandType
 }
 
 impl Hand {
     fn new(cards: [char; 5], bid: u64, joker: bool) -> Hand {
+        Hand {
+            cards, bid, joker, hand_type: Self::hand_type(&cards, joker)
+        }
+    }
+
+    fn hand_type(cards: &[char; 5], joker: bool) -> HandType {
         let mut combos = HashMap::with_capacity(5);
 
         for c in cards {
@@ -58,13 +64,7 @@ impl Hand {
             }
         }
 
-        Hand {
-            cards, bid, joker, combos
-        }
-    }
-
-    fn hand_type(&self) -> HandType {
-        let len = self.combos.len();
+        let len = combos.len();
 
         if len == 5 {
             return HandType::HighCard
@@ -77,7 +77,7 @@ impl Hand {
             let mut have_2 = false;
             let mut hand_type = HandType::TwoPair;
 
-            for (_, count) in self.combos.iter() {
+            for (_, count) in combos.iter() {
                 if *count == 4 {
                     return HandType::FourOfAKind;
                 } else if *count == 3 {
@@ -95,7 +95,6 @@ impl Hand {
 
             hand_type
         }
-
     }
 }
 
@@ -107,8 +106,8 @@ impl PartialEq<Self> for Hand {
 
 impl PartialOrd<Self> for Hand {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        let h1 = self.hand_type();
-        let h2 = other.hand_type();
+        let h1 = &self.hand_type;
+        let h2 = &other.hand_type;
 
         let h_ord = h1.cmp(&h2);
 
