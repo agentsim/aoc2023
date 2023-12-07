@@ -114,19 +114,10 @@ impl PartialOrd<Self> for Hand {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         let h1 = &self.hand_type;
         let h2 = &other.hand_type;
-
         let h_ord = h1.cmp(&h2);
 
         if h_ord == Ordering::Equal {
-            for i in 0..5 {
-                let v_ord = self.vals[i].cmp(&other.vals[i]);
-
-                if v_ord != Ordering::Equal {
-                    return Some(v_ord);
-                }
-            }
-
-            Some(Ordering::Equal)
+            Some(self.vals.cmp(&other.vals))
         } else {
             Some(h_ord)
         }
