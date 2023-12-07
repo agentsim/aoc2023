@@ -16,16 +16,22 @@ enum HandType {
 }
 
 struct Hand {
-    cards: [char; 5],
+    vals: [u32; 5],
     bid: u64,
-    joker: bool,
     hand_type: HandType
 }
 
 impl Hand {
     fn new(cards: [char; 5], bid: u64, joker: bool) -> Hand {
+        let vals = [
+            value(&cards[0], joker),
+            value(&cards[1], joker),
+            value(&cards[2], joker),
+            value(&cards[3], joker),
+            value(&cards[4], joker),
+        ];
         Hand {
-            cards, bid, joker, hand_type: Self::hand_type(&cards, joker)
+            vals, bid, hand_type: Self::hand_type(&cards, joker)
         }
     }
 
@@ -100,7 +106,7 @@ impl Hand {
 
 impl PartialEq<Self> for Hand {
     fn eq(&self, other: &Self) -> bool {
-        self.cards == other.cards
+        self.vals == other.vals
     }
 }
 
@@ -113,9 +119,7 @@ impl PartialOrd<Self> for Hand {
 
         if h_ord == Ordering::Equal {
             for i in 0..5 {
-                let v1 = value(&self.cards[i], self.joker);
-                let v2 = value(&other.cards[i], self.joker);
-                let v_ord = v1.cmp(&v2);
+                let v_ord = self.vals[i].cmp(&other.vals[i]);
 
                 if v_ord != Ordering::Equal {
                     return Some(v_ord);
