@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::ops::Deref;
+use std::rc::Rc;
 use num::Integer;
 use crate::util::{read_until, skip_until, skip_whitespace};
 
@@ -8,7 +10,7 @@ pub fn solve1() -> u32 {
     let mut lines = INPUT.lines();
     let instructions: Vec<_> = lines.next().unwrap().chars().collect();
     let mut map = HashMap::with_capacity(1000);
-    let mut curr = "AAA".to_string();
+    let mut curr = Rc::new("AAA".to_string());
     let mut rc = 0;
 
     lines.next();
@@ -19,17 +21,17 @@ pub fn solve1() -> u32 {
 
         skip_until(&mut chars, |c| c == '(');
         chars.next();
-        let l = read_until(&mut chars, |c| c == ',');
+        let l = Rc::new(read_until(&mut chars, |c| c == ','));
         chars.next();
         skip_whitespace(&mut chars);
-        let r = read_until(&mut chars, |c| c == ')');
+        let r = Rc::new(read_until(&mut chars, |c| c == ')'));
 
         map.insert(key, (l, r));
     }
 
     loop {
         for i in instructions.iter() {
-            if let Some((l, r)) = map.get(&curr) {
+            if let Some((l, r)) = map.get(curr.deref()) {
                 if *i == 'L' {
                     curr = l.clone();
                 } else {
@@ -39,7 +41,7 @@ pub fn solve1() -> u32 {
 
             rc += 1;
 
-            if curr == "ZZZ".to_string() {
+            if *curr.deref() == "ZZZ".to_string() {
                 return rc;
             }
         }
@@ -57,14 +59,14 @@ pub fn solve2() -> u64 {
 
     for line in lines {
         let mut chars = line.chars().peekable();
-        let key = read_until(&mut chars, |c| c == ' ');
+        let key = Rc::new(read_until(&mut chars, |c| c == ' '));
 
         skip_until(&mut chars, |c| c == '(');
         chars.next();
-        let l = read_until(&mut chars, |c| c == ',');
+        let l = Rc::new(read_until(&mut chars, |c| c == ','));
         chars.next();
         skip_whitespace(&mut chars);
-        let r = read_until(&mut chars, |c| c == ')');
+        let r = Rc::new(read_until(&mut chars, |c| c == ')'));
 
         if key.ends_with('A') {
             curr.push(key.clone());
