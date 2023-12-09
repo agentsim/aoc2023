@@ -75,3 +75,33 @@ pub fn read_u64(chars: &mut Peekable<Chars>) -> u64 {
 
     num
 }
+
+pub fn read_i64(chars: &mut Peekable<Chars>) -> i64 {
+    let mut num = 0;
+    let mut negative = false;
+
+    if let Some(ch) = chars.peek() {
+        if *ch == '-' {
+            negative = true;
+            chars.next();
+        }
+    }
+
+    loop {
+        if let Some(ch) = chars.next() {
+            if let Some(v) = ch.to_digit(10) {
+                num = num * 10 + (v as i64);
+            } else {
+                break
+            }
+        } else {
+            break
+        }
+    }
+
+    if negative {
+        -num
+    } else {
+        num
+    }
+}
