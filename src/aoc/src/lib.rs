@@ -7,4 +7,5 @@ pub mod aoc06;
 pub mod aoc07;
 pub mod aoc08;
 pub mod aoc09;
+pub mod aoc10;
 mod util;
