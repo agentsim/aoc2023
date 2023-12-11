@@ -1,6 +1,3 @@
-use std::collections::BTreeSet;
-use std::ops::Bound::{Excluded, Included};
-
 static INPUT: &str = include_str!("input");
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -12,15 +9,13 @@ struct Coord {
 fn read_galaxies(larger_expansion: bool) -> Vec<Coord> {
     let mut galaxies = Vec::with_capacity(500);
     let mut missing_rows = 0;
-    let mut missing_cols = BTreeSet::new();
+    let mut missing_cols = Vec::new();
 
     for (row, line) in INPUT.lines().enumerate() {
         let mut found = false;
 
         if row == 0 {
-            for i in 0..line.len() {
-                missing_cols.insert(i);
-            }
+            missing_cols = vec![true; line.len()];
         }
 
         for (col, ch) in line.chars().enumerate() {
@@ -33,7 +28,7 @@ fn read_galaxies(larger_expansion: bool) -> Vec<Coord> {
                     galaxies.push(Coord { x: col, y: row + missing_rows });
                 }
 
-                missing_cols.remove(&col);
+                missing_cols[col] = false;
             }
         }
 
@@ -43,10 +38,18 @@ fn read_galaxies(larger_expansion: bool) -> Vec<Coord> {
     }
 
     for coord in galaxies.iter_mut() {
+        let missing = &missing_cols[0..coord.x].iter().fold(0_usize, |acc, e| {
+            if *e {
+                acc + 1
+            } else {
+                acc
+            }
+        });
+
         if larger_expansion {
-            coord.x += missing_cols.range((Included(&0), Excluded(&coord.x))).count() * 999_999;
+            coord.x += missing * 999_999
         } else {
-            coord.x += missing_cols.range((Included(&0), Excluded(&coord.x))).count();
+            coord.x += missing
         }
     }
 
