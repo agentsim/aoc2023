@@ -5,63 +5,67 @@ struct Coord {
     y: usize
 }
 
-fn read_galaxies(larger_expansion: bool) -> Vec<Coord> {
-    let mut galaxies = Vec::with_capacity(500);
+fn read_galaxies(factor: usize) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
+    let mut galaxy_x = Vec::with_capacity(500);
+    let mut y_coord_count = Vec::with_capacity(500);
     let mut missing_rows = 0;
-    let mut missing_cols = Vec::new();
 
     for (row, line) in INPUT.lines().enumerate() {
-        let mut found = false;
+        let mut count = 0;
 
         if row == 0 {
-            missing_cols = vec![true; line.len()];
+            galaxy_x = vec![0_usize; line.len()];
         }
 
         for (col, ch) in line.chars().enumerate() {
             if ch == '#' {
-                found = true;
-
-                if larger_expansion {
-                    galaxies.push(Coord { x: col, y: row + (missing_rows * 999_999) });
-                } else {
-                    galaxies.push(Coord { x: col, y: row + missing_rows });
-                }
-
-                missing_cols[col] = false;
+                count += 1;
+                galaxy_x[col] += 1;
             }
         }
 
-        if !found {
+        if count == 0 {
             missing_rows += 1;
-        }
-    }
-
-    for coord in galaxies.iter_mut() {
-        let missing = &missing_cols[0..coord.x].iter().fold(0_usize, |acc, e| {
-            if *e {
-                acc + 1
-            } else {
-                acc
-            }
-        });
-
-        if larger_expansion {
-            coord.x += missing * 999_999
         } else {
-            coord.x += missing
+            y_coord_count.push((row + missing_rows * factor, count));
         }
     }
 
-    galaxies
+    let mut x_coord_count = Vec::with_capacity(galaxy_x.len());
+
+    let mut missing = 0;
+
+    for (idx, count) in galaxy_x.iter().enumerate() {
+        if *count == 0 {
+            missing += 1;
+        } else {
+            x_coord_count.push((idx + missing * factor, *count));
+        }
+    }
+
+    missing = 0;
+
+    (x_coord_count, y_coord_count)
 }
 
 fn solve(larger_expansion: bool) -> usize {
-    let mut galaxies = read_galaxies(larger_expansion);
+    let factor = if larger_expansion {
+        999_999
+    } else {
+        1
+    };
+    let (mut x, mut y) = read_galaxies(factor);
     let mut rc = 0;
 
-    while let Some(curr) = galaxies.pop() {
-        for g in galaxies.iter() {
-            rc += curr.x.abs_diff(g.x) + curr.y.abs_diff(g.y);
+    while let Some((idx, count)) = x.pop() {
+        for (x, c) in x.iter() {
+            rc += idx.abs_diff(*x) * (count * c);
+        }
+    }
+
+    while let Some((idx, count)) = y.pop() {
+        for (y, c) in y.iter() {
+            rc += idx.abs_diff(*y) * (count * c);
         }
     }
 
