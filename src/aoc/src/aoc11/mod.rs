@@ -1,6 +1,5 @@
 static INPUT: &str = include_str!("input");
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 struct Coord {
     x: usize,
     y: usize
@@ -56,8 +55,8 @@ fn read_galaxies(larger_expansion: bool) -> Vec<Coord> {
     galaxies
 }
 
-pub fn solve1() -> usize {
-    let mut galaxies = read_galaxies(false);
+fn solve(larger_expansion: bool) -> usize {
+    let mut galaxies = read_galaxies(larger_expansion);
     let mut rc = 0;
 
     while let Some(curr) = galaxies.pop() {
@@ -69,15 +68,10 @@ pub fn solve1() -> usize {
     rc
 }
 
+pub fn solve1() -> usize {
+    solve(false)
+}
+
 pub fn solve2() -> usize {
-    let mut galaxies = read_galaxies(true);
-    let mut rc = 0;
-
-    while let Some(curr) = galaxies.pop() {
-        for g in galaxies.iter() {
-            rc += curr.x.abs_diff(g.x) + curr.y.abs_diff(g.y);
-        }
-    }
-
-    rc
+    solve(true)
 }
