@@ -6,7 +6,7 @@ struct Coord {
 }
 
 fn read_galaxies(factor: usize) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
-    let mut galaxy_x = Vec::with_capacity(500);
+    let mut galaxy_x = Vec::new();
     let mut y_coord_count = Vec::with_capacity(500);
     let mut missing_rows = 0;
 
@@ -32,7 +32,6 @@ fn read_galaxies(factor: usize) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
     }
 
     let mut x_coord_count = Vec::with_capacity(galaxy_x.len());
-
     let mut missing = 0;
 
     for (idx, count) in galaxy_x.iter().enumerate() {
@@ -42,8 +41,6 @@ fn read_galaxies(factor: usize) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
             x_coord_count.push((idx + missing * factor, *count));
         }
     }
-
-    missing = 0;
 
     (x_coord_count, y_coord_count)
 }
