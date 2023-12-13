@@ -89,31 +89,21 @@ fn solve(smudged: bool) -> usize {
     let mut grids = read_grid();
     let mut rc = 0;
 
-    for (g, ((row, row_len), (col, col_len))) in grids.iter_mut().enumerate() {
-        let row_result = reflection_point(row, None);
-        let col_result = reflection_point(col, None);
-
+    for ((row, row_len), (col, col_len)) in grids.iter_mut() {
         if smudged {
-            let smudged_row_result = reflection_point_smudged(row, *row_len, row_result);
-            let smudged_col_result = reflection_point_smudged(col, *col_len, col_result);
+            let row_result = reflection_point(row, None);
+            let col_result = reflection_point(col, None);
 
-            assert!(!(smudged_row_result.is_some() && smudged_col_result.is_some()));
-
-            if let Some(idx) = smudged_row_result {
+            if let Some(idx) = reflection_point_smudged(row, *row_len, row_result) {
                 rc += (idx + 1) * 100;
-            } else if let Some(idx) = smudged_col_result {
+            } else if let Some(idx) = reflection_point_smudged(col, *col_len, col_result) {
                 rc += idx + 1;
             } else {
-                if let Some(idx) = row_result {
-                    rc += (idx + 1) * 100;
-                } else if let Some(idx) = col_result {
-                    rc += idx + 1;
-                }
             }
         } else {
-            if let Some(idx) = row_result {
+            if let Some(idx) = reflection_point(row, None) {
                 rc += (idx + 1) * 100;
-            } else if let Some(idx) = col_result {
+            } else if let Some(idx) = reflection_point(col, None) {
                 rc += idx + 1;
             }
         }
