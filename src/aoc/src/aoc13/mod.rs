@@ -98,7 +98,6 @@ fn solve(smudged: bool) -> usize {
                 rc += (idx + 1) * 100;
             } else if let Some(idx) = reflection_point_smudged(col, *col_len, col_result) {
                 rc += idx + 1;
-            } else {
             }
         } else {
             if let Some(idx) = reflection_point(row, None) {
