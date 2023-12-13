@@ -59,11 +59,16 @@ fn main() -> Result<()> {
     let sol11_2 = aoc11::solve2();
     println!("AOC 11.1 - {}", sol11_1);
     println!("AOC 11.2 - {}", sol11_2);
+
+    let sol12_1 = aoc12::solve1();
+    let sol12_2 = aoc12::solve2();
+    println!("AOC 12.1 - {}", sol12_1);
+    println!("AOC 12.2 - {}", sol12_2);
     */
 
-    //let sol12_1 = aoc12::solve1();
-    let sol12_2 = aoc12::solve2();
-    //println!("AOC 12.1 - {}", sol12_1);
-    println!("AOC 12.2 - {}", sol12_2);
+    let sol13_1 = aoc13::solve1();
+    println!("AOC 13.1 - {}", sol13_1);
+    let sol13_2 = aoc13::solve2();
+    println!("AOC 13.2 - {}", sol13_2);
     Ok(())
 }
