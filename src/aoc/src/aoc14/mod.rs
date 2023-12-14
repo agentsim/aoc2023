@@ -1,5 +1,5 @@
 use std::collections::hash_map::DefaultHasher;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 use crate::aoc14::Entry::{Empty, Rock, Round};
 
@@ -47,19 +47,6 @@ fn read_grid() -> Vec<Vec<Entry>> {
     }
 
     rc
-}
-
-fn hash<'a, I>(direction: Direction, values: I) -> u64
-where I: IntoIterator<Item = &'a Entry> {
-    let mut hasher = DefaultHasher::new();
-
-    direction.hash(&mut hasher);
-
-    for v in values {
-        v.hash(&mut hasher);
-    }
-
-    hasher.finish()
 }
 
 fn tilt_north(grid: &mut Vec<Vec<Entry>>) {
@@ -242,7 +229,6 @@ pub fn solve2() -> usize {
     let mut loop_begin = 0;
 
     grid.hash(&mut hasher);
-
     hashes.insert(hasher.finish(), 0);
 
     loop {
