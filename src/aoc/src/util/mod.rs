@@ -105,3 +105,40 @@ pub fn read_i64(chars: &mut Peekable<Chars>) -> i64 {
         num
     }
 }
+
+pub fn ascii_read_as_u64_until<'a, I, F>(data: &mut Peekable<I>, mut f: F) -> u64
+    where I: Iterator<Item = &'a u8>,
+          F: FnMut(u8) -> bool {
+    let mut rc = 0_u64;
+    let mut offset = 0;
+
+    while let Some(byte) = data.peek() {
+        if f(**byte) {
+            break;
+        } else {
+            rc += (**byte as u64) << offset;
+            offset += 8;
+        }
+
+        data.next();
+    }
+
+    rc
+}
+
+pub fn ascii_read_usize<'a, I>(data: &mut Peekable<I>) -> usize
+    where I: Iterator<Item = &'a u8> {
+    let mut rc = 0_usize;
+
+    while let Some(byte) = data.peek() {
+        if **byte >= b'0' && **byte <= b'9' {
+            rc = rc * 10 + byte.abs_diff(b'0') as usize;
+        } else {
+            break;
+        }
+
+        data.next();
+    }
+
+    rc
+}
